@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" href = "stylesheet.css"/>   <!-- href is the path of external css file -->
+    <title>Tanks</title>
+</head>
+<body>
+    <div class = "tank-form">
+        <form action="">
+            <label for="location">Location:</label><br>
+            <input type="text" id="location" name="location" value = ""><br>
+            <label for="longitude">Longitude:</label><br>
+            <input type="float" id="longitude" name="Longitude" value=""><br><br>
+            <label for="latitude">Latitude:</label><br>
+            <input type="float" id="latitude" name="latitude" value=""><br><br>
+            <label for="latitude">Percentage Full:</label><br>
+            <input type="int" id="percentage_full" name="percentage_full" value=""><br><br>
+            <input type="submit" value="Submit" id = "newtank">
+          </form>           
+    </div>
+    <script>
+        var url = "http://localhost:3001/tank"
+        window.onload = function() {
+            var getOptions = {
+                method: "GET"
+            };
+            
+            fetch(url)
+            .then((res) => res.json())
+            .then((tanks) => {
+                console.log(tanks);
+                var body = document.querySelector("body");
+                
+                tanks.forEach((tank) => {
+                    console.log(tank._id["$oid"]);
+                    var tankCard = document.createElement("tank-card");
+                    tankCard.setAttribute("tank_id", tank._id["$oid"]);
+                    tankCard.setAttribute("latitude", tank.latitude);
+                    tankCard.setAttribute("longitude", tank.longitude);
+                    tankCard.setAttribute("percentage_full", tank.percentage_full);
+                    tankCard.setAttribute("location", tank.location);
+                    tankCard.setAttribute("image", "https://image.sciencenorway.no/1438480.jpg?imageId=1438480&width=1058&height=604");
+                    body.appendChild(tankCard);
+                });   // use data collected from database to create card
+
+            });
+            
+        };
+    </script>
+    <script src = "Tanks/tank-card.js"></script>
+    <script type="text/javascript" src="/script.js"></script>
+</body>
+</html>
